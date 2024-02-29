@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  server:
+    build:
+      context: .  # Points to the project root directory
+      dockerfile: server/Dockerfile  # Path to the Dockerfile from the context
+    ports:
+      - "5000:5000"
+    volumes:
+      - server-data:/app/server_uploaded_files
+    networks:
+      - app-network
+  client:
+    build:
+      context: . # Points to the project root directory
+      dockerfile: client/Dockerfile  # Path to the Dockerfile from the context
+    depends_on:
+      - server
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  server-data:
